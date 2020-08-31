@@ -1,0 +1,90 @@
+polyCube -width 15 -height 4 -depth 5 -sx 3 -sy 3 -sz 3 -ax 0 2 0 -cuv 4 -ch 2;
+rename "pCube1" "mainBody";
+move -r 0 4 0;
+select -r mainBody.f[12] mainBody.f[13] mainBody.f[14];
+move -r 0 1 0 ;
+select -d mainBody.f[12:14] ;
+select -r mainBody.f[40] mainBody.f[37];
+move -r 1 0 0;
+select -r mainBody.f[9] mainBody.f[12] mainBody.f[15] mainBody.f[51] mainBody.f[52] mainBody.f[53];
+doDelete;
+
+polyCylinder -radius 2 -height 1 -sx 10 -sy 1 -sz 1 -ax 1 0 90 -rcp 0 -cuv 3 -ch 1;
+rename "pCylinder1" "wheel1";
+move -r -4 2 -2.5;
+duplicate -rr;
+move -r 4.5 0 0;
+duplicate -rr;
+move -r 4.5 0 0;
+select -tgl wheel2 wheel1;
+duplicate -rr;
+move -r 0 0 5;
+
+polyCube -width 7 -height 7 -depth 5.5 -sx 3 -sy 3 -sz 3 -ax 0 1 0 -cuv 4 -ch 2;
+rename "pCube1" "cabin1";
+select -r cabin1;
+move -r -4 7 0;
+select -r cabin1.e[9:11] cabin1.e[18:20];
+move -r 0 -2 0 ;
+select -r cabin1.e[38] cabin1.e[42] cabin1.e[46] cabin1.e[50] cabin1.e[54] cabin1.e[58] cabin1.e[62] cabin1.e[66] cabin1.e[70] cabin1.e[74] cabin1.e[78] cabin1.e[82];
+move -r 1.074768 0 0 ;
+select -r cabin1.e[37] cabin1.e[41] cabin1.e[45] cabin1.e[49] cabin1.e[53] cabin1.e[57] cabin1.e[61] cabin1.e[65] cabin1.e[69] cabin1.e[73] cabin1.e[77] cabin1.e[81];
+move -r -1.356236 0 0 ;
+select -r cabin1.e[104] cabin1.e[102];
+move -r 0 0 -0.90099 ;
+select -r cabin1.e[105] cabin1.e[103];
+move -r 0 0 0.915864 ;
+select -r cabin1.f[4] cabin1.f[22] cabin1.f[49];
+doDelete;
+select -r cabin1.f[44] ;
+move -r -0.170126 0 0 ;
+
+polyCylinder -radius 1 -height 3 -sx 10 -sy 1 -sz 1 -ax 0 1 0 -rcp 0 -cuv 3 -ch 1;
+rename "pCylinder1" "chimney1";
+move -r 6 8 0;
+duplicate -rr;
+move -r -4 0 0;
+select -r chimney1.f[20:29];
+move -r 0 2 0;
+
+polyCube -width 3 -height 2 -depth 4 -sx 2 -sy 2 -sz 2 -ax 0 2 0 -cuv 4 -ch 2;
+rename "pCube1" "front1";
+move -r 9 3 0;
+select -r front1.e[23]  front1.e[17] front1.e[20] front1.e[23] front1.e[26] front1.e[29] front1.e[32] front1.e[35] front1.e[38] ;;
+move -r -0.206922 0 0 ;
+select -r front1.e[27] front1.e[24] front1.e[41] front1.e[2:3] front1.e[10:11] front1.e[40:41] front1.e[44:45];
+move -r 0 -0.6 0 ;
+select -r front1.e[24] front1.e[27] ;
+move -r 0 -0.599228 0 ;
+
+select -r wheel1 wheel2 wheel3 wheel6 wheel5 wheel4;
+connectAttr -f lambert3.outColor lambert3SG.surfaceShader;
+sets -e -forceElement lambert3SG;
+setAttr "lambert3.color" -type double3 0.0240964 0.0240964 0.0240964 ;
+
+select -r cabin1;
+connectAttr -f lambert4.outColor lambert4SG.surfaceShader;
+sets -e -forceElement lambert4SG;
+setAttr "lambert4.color" -type double3 0.6631 0 0.1393 ;
+
+select -r mainBody;
+connectAttr -f lambert5.outColor lambert5SG.surfaceShader;
+sets -e -forceElement lambert5SG;
+setAttr "lambert5.color" -type double3 1 0.2103 0 ;
+
+select -r chimney1;
+connectAttr -f lambert6.outColor lambert6SG.surfaceShader;
+sets -e -forceElement lambert6SG;
+setAttr "lambert6.color" -type double3 0.064 0.076168 1 ;
+
+select -r chimney2;
+connectAttr -f lambert7.outColor lambert7SG.surfaceShader;
+sets -e -forceElement lambert7SG;
+setAttr "lambert7.color" -type double3 0.0346053 0.539 0.034496 ;
+
+select -r front1 ;
+connectAttr -f lambert8.outColor lambert8SG.surfaceShader;
+sets -e -forceElement lambert8SG;
+setAttr "lambert8.color" -type double3 0.5706 0 1 ;
+
+select -cl;
