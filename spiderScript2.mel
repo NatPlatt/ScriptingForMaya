@@ -1,0 +1,76 @@
+{
+polySphere -n mainBody -sx 10 -sy 10;
+string $geoGroup[] = {};
+$bodyGeo = "mainBody";
+xform -translation -2 1.5 0 -scale 2 2 2 $bodyGeo;
+
+$geoGroup[0] = $bodyGeo;
+print $geoGroup[0];
+
+polySphere -n head -sx 5 -sy 5;
+$headGeo = "head";
+xform -translation 0.5 1 0 $headGeo;
+$geoGroup[size($geoGroup)] = $headGeo;
+
+//I didn't put the first leg in a for loop because of how I did the transform math
+//'i' had to equal 1 at the start of the loop which would make the naming conventions weird
+
+polyCylinder -n legUpperR -sx 6 -sy 6;
+$legUpperGeoR = "legUpperR";
+xform -translation -0.75 2 2 -scale 0.2 2 0.2 -rotation 45 0 0;
+            
+polyCylinder -n legLowerR -sx 6 -sy 6;
+$legLowerGeoR = "legLowerR"; 
+xform -translation -0.75 2 4.5 -scale 0.2 2 0.2 -rotation 315 0 0;
+
+polyUnite -n legR $legUpperGeoR  $legLowerGeoR;
+$geoGroup[size($geoGroup)] = "legR";
+
+    for($i=1; $i<=3; ++$i)
+        {
+           polyCylinder -n legUpperR -sx 6 -sy 6;
+            $legUpperGeoR = "legUpperR";
+            xform -translation (-0.75*($i+1)) 2 2 -scale 0.2 2 0.2 -rotation 45 0 0;
+            
+            polyCylinder -n legLowerR -sx 6 -sy 6;
+            $legLowerGeoR = "legLowerR"; 
+            xform -translation (-0.75*($i+1)) 2 4.5 -scale 0.2 2 0.2 -rotation 315 0 0;
+            
+            polyUnite -n legR1 ($legUpperGeoR + $i) ($legLowerGeoR + $i) ;
+            $geoGroup[size($geoGroup)] = ("legR" + $i);
+            
+        }
+        
+polyCylinder -n legUpperL -sx 6 -sy 6;
+$legUpperGeoL = "legUpperL";
+xform -translation -0.75 2 -2 -scale 0.2 2 0.2 -rotation 315 0 0;
+           
+polyCylinder -n legLowerL -sx 6 -sy 6;
+$legLowerGeoL = "legLowerL";
+xform -translation -0.75 2 -4.5 -scale 0.2 2 0.2 -rotation 45 0 0;
+
+polyUnite -n legL $legUpperGeoL  $legLowerGeoL;
+$geoGroup[size($geoGroup)] = "legL";
+
+     for($i=1; $i<=4; ++$i)
+        {
+           polyCylinder -n legUpperL -sx 6 -sy 6;
+            $legUpperGeoL = "legUpperL";
+            xform -translation (-0.75*$i) 2 -2 -scale 0.2 2 0.2 -rotation 315 0 0;
+            
+            polyCylinder -n legLowerL -sx 6 -sy 6;
+            $legLowerGeoL = "legLowerL"; 
+            xform -translation (-0.75*$i) 2 -4.5 -scale 0.2 2 0.2 -rotation 45 0 0;
+            
+            polyUnite -n legL1 ($legUpperGeoL + $i) ($legLowerGeoL + $i);
+            $geoGroup[size($geoGroup)] = ("legL" + $i);
+        }
+ 
+print $geoGroup;       
+
+polyUnite -n spiderBody $geoGroup;
+
+delete -ch;
+
+group -n spiderGroup;
+}
