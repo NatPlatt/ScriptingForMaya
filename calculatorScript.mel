@@ -1,0 +1,147 @@
+
+
+proc float AddNums(float $values[])
+{
+    float $sum;
+    
+    for ($i = 0; $i < size($values); $i++){
+        
+        $sum += $values[$i];
+    }
+     print("\nThe SUM of the given values is " + $sum);
+    return $sum;
+}
+
+proc float SubtractNums(float $values[])
+{
+    float $diff = $values[0];
+    
+    for ($i = 1; $i < size($values); $i++){
+        
+        $diff -= $values[$i];
+    }
+    print("\nThe DIFFERENCE of the given values is " + $diff); 
+    return $diff;
+}
+
+proc float MultiplyNums(float $values[])
+{
+    float $product = 1;
+    
+     for ($i = 0; $i < size($values); $i++){
+        
+        $product *= $values[$i];
+    }
+    print("\nThe PRODUCT of the given values is " + $product);
+    return $product;
+}
+
+proc float DivideNums(float $values[])
+{
+    float $dividend = $values[0];
+    for ($i = 1; $i < size($values); $i++){
+        
+        $dividend /= $values[$i];
+    }
+    print("\nThe DIVIDEND of the given values is " + $dividend);
+    return $dividend;
+}
+
+proc float AvgNums( float $values[])
+{
+    float $average;
+    float $sum;
+    for ($i=0; $i< (size($values)); $i++){
+        $sum = $sum + $values[$i];
+    }
+    $average = $sum / (size($values));
+    print("\nThe AVERAGE of the values is " + $average);
+    return $average;
+}
+
+proc float MedianNums( float $values[])
+{
+    int $length = size($values);
+    float $median, $median1, $median2;
+    $values = `sort $values`;
+    
+    if ($length % 2 == 0)
+    {
+        $median1 = $values[$length / 2];
+        $median2 = $values[$length / 2 - 1];
+        $median = ($median1 + $median2)/ 2;
+    }
+    else {
+        $median = $values[$length / 2];
+    }
+    print("\nThe MEDIAN of the values is " + $median);
+    return $median;
+}
+
+proc string ModeNums( int $values[])
+{
+    float $numOfDuplicates[];
+    int $mode[];
+    int $finalModes[];
+    string $modeResult;
+    for ($i=0; $i < (size($values)); $i++)
+    {
+        int $x = 0;
+        int $count = intArrayCount( $values[$i], $values );
+        
+        for ($j=0; $j< (size($values)); $j++)
+        {
+            if ($values[$i] == $values[$j])
+            {
+                $x = $count;
+                
+            }
+        }
+        $numOfDuplicates[$i] = $x;
+        
+    }
+    $values = `sort $values`;
+    $numOfDuplicatesSorted = `sort $numOfDuplicates`;
+    int $maxMode = $numOfDuplicatesSorted[size($numOfDuplicates)-1];
+    
+    int $modeNum;
+    int $x;
+    
+    for ($i=0; $i < size($numOfDuplicates); $i++)
+    {   
+        
+        if ($numOfDuplicates[$i] == $maxMode)
+        {
+             if(!intArrayContains($values[$x] , $finalModes ))
+               {
+                   intArrayInsertAtIndex($x, $finalModes, $values[$x] );
+               }  
+        }
+        $x++;
+    }
+    
+    $modeResult = intArrayToString( $finalModes, "," );
+    
+    print ("\nThe MODE is " + $modeResult); 
+    return $modeResult;
+}
+
+proc int PowerNums(int $baseNum, int $exponent)
+{
+    int $result = $baseNum;
+    for ($i = 2; $i <= $exponent; $i++)
+    {
+        $result = $result * $baseNum;
+    }
+    print("\nThe Result of " + $baseNum + " to the power of " + $exponent + " is " + $result);
+    return $result;
+}
+
+AddNums({34, 5});
+SubtractNums({63, 43});
+MultiplyNums({3, 20});
+DivideNums({64, 8});
+AvgNums({5, 3, 2, 19, 345});
+MedianNums({3, 5, 26, 34, 25});
+ModeNums({1,2,3,3,3,3,4,5,5,5});
+PowerNums(5, 3);
