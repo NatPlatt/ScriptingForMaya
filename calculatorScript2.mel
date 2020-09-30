@@ -1,0 +1,238 @@
+global proc Calculator(float $numbers[], string $operation)
+{
+    float $result = 0;
+    if ($operation == "Add")
+    {
+        $result = AddNums($numbers);
+        print($result);
+    }
+    else if ($operation == "Subtract")
+    {
+        $result = SubtractNums($numbers);
+        print($result);
+    }
+    else if ($operation == "Multiply")
+    {
+        $result = MultiplyNums($numbers);
+        print($result);
+    }
+    else if ($operation == "Divide")
+    {
+        $result = DivideNums($numbers);
+        print($result);
+    }
+    else if ($operation == "Average")
+    {
+        $result = AvgNums($numbers);
+        print($result);
+    }
+    else if ($operation == "Median")
+    {
+        $result = MedianNums($numbers);
+        print($result);
+    }
+    else if ($operation == "Mode")
+    {
+        $result = ModeNums($numbers);
+        print($result);
+    }
+    else if ($operation == "Power")
+    {
+        $result = PowerNums($numbers);
+        print($result);
+    }
+    else
+    {
+        print("\nThat is not valid input please try again");
+    }
+}
+
+global proc float AddNums(float $values[])
+{
+    float $sum;
+    string $numbers;
+    
+    for ($i = 0; $i < size($values); $i++){
+        
+        $sum += $values[$i];
+        $numbers += $values[$i];
+        $numbers += ",";
+    }
+    print("\nThe SUM of "+$numbers+ " is ");
+    return $sum;
+}
+
+global proc float SubtractNums(float $values[])
+{
+    float $diff = $values[0];
+    string $numbers;
+    
+    for ($i = 1; $i < size($values); $i++){
+        
+        $diff -= $values[$i];
+    }
+     for ($i=0; $i< size($values); $i++)
+    {
+        $numbers += $values[$i];
+        $numbers += ",";
+    }
+    print("\nThe DIFFERENCE of "+$numbers+ " is "); 
+    return $diff;
+}
+
+global proc float MultiplyNums(float $values[])
+{
+    float $product = 1;
+    string $numbers;
+     for ($i = 0; $i < size($values); $i++){
+        
+        $product *= $values[$i];
+        $numbers += $values[$i];
+        $numbers += ",";
+    }
+    print("\nThe PRODUCT of "+$numbers+ " is ");
+    return $product;
+}
+
+global proc float DivideNums(float $values[])
+{
+    float $dividend = $values[0];
+    string $numbers;
+    for ($i = 1; $i < size($values); $i++){
+        
+        $dividend /= $values[$i];
+    }
+     for ($i=0; $i< size($values); $i++)
+    {
+        $numbers += $values[$i];
+        $numbers += ",";
+    }
+    print("\nThe DIVIDEND of "+$numbers+ " is ");
+    return $dividend;
+}
+
+global proc float AvgNums( float $values[])
+{
+    float $average;
+    float $sum;
+    string $numbers;
+    for ($i=0; $i< (size($values)); $i++){
+        $sum = $sum + $values[$i];
+    }
+    $average = $sum / (size($values));
+    
+     for ($i=0; $i< size($values); $i++)
+    {
+        $numbers += $values[$i];
+        $numbers += ",";
+    }
+    print("\nThe AVERAGE of "+ $numbers+ " is ");
+    return $average;
+}
+
+global proc float MedianNums( float $values[])
+{
+    int $length = size($values);
+    float $median, $median1, $median2;
+    string $numbers;
+    $values = `sort $values`;
+    
+    if ($length % 2 == 0)
+    {
+        $median1 = $values[$length / 2];
+        $median2 = $values[$length / 2 - 1];
+        $median = ($median1 + $median2)/ 2;
+    }
+    else {
+        $median = $values[$length / 2];
+    }
+    
+    for ($i=0; $i< $length; $i++)
+    {
+        $numbers += $values[$i];
+        $numbers += ",";
+    }
+    print("\nThe MEDIAN of "+$numbers+ " is ");
+    return $median;
+}
+
+global proc string ModeNums( float $values[])
+{
+    int $numOfDuplicates[];
+    int $mode[];
+    int $finalModes[];
+    string $modeResult;
+    
+    for ($i=0; $i < (size($values)); $i++)
+    {
+        int $x = 0;
+        int $count = floatArrayCount( $values[$i], $values );
+        
+        for ($j=0; $j< (size($values)); $j++)
+        {
+            if ($values[$i] == $values[$j])
+            {
+                $x = $count;
+                
+            }
+        }
+        $numOfDuplicates[$i] = $x;
+        
+    }
+    $values = `sort $values`;
+    $numOfDuplicatesSorted = `sort $numOfDuplicates`;
+    int $maxMode = $numOfDuplicatesSorted[size($numOfDuplicates)-1];
+    
+    float $modeNum;
+    int $x;
+    string $numbers;
+    for ($i=0; $i < size($numOfDuplicates); $i++)
+    {   
+        
+        if ($numOfDuplicates[$i] == $maxMode)
+        {
+             if(!intArrayContains($values[$x] , $finalModes ))
+               {
+                   intArrayInsertAtIndex($x, $finalModes, $values[$x] );
+               }  
+        }
+        $x++;
+        $numbers += $values[$i];
+        $numbers += ",";
+    }
+    
+    $modeResult = intArrayToString( $finalModes, "," );
+    
+    print ("\nThe MODE of "+ $numbers + " is "); 
+    return $modeResult;
+}
+
+global proc int PowerNums(float $values[])
+{
+    float $result = $values[0];
+    for ($i = 1; $i <= size($values); $i++)
+    {
+        $result = $result * $values[0];
+    }
+    print("\nThe Result of " + $values[0] + " to the power of " + $values[1] + " is ");
+    return $result;
+}
+
+/*AddNums({34, 5});
+SubtractNums({63, 43});
+MultiplyNums({3, 20});
+DivideNums({64, 8});
+AvgNums({5, 3, 2, 19, 345});
+MedianNums({3, 5, 26, 34, 25});
+ModeNums({1,2,3,3,3,3,4,5,5,5});
+PowerNums({5, 3});*/
+
+Calculator({34, 5}, "Add");
+Calculator({63, 43}, "Subtract");
+Calculator({3, 20}, "Multiply");
+Calculator({64, 8}, "Divide");
+Calculator({5, 3, 2, 19, 345}, "Average");
+Calculator({3, 5, 26, 34, 25}, "Median");
+Calculator({1,2,3,3,3,3,4,5,5,5}, "Mode");
+Calculator({5, 3}, "Power");
+Calculator({},"blahblahblah");
