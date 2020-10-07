@@ -1,0 +1,27 @@
+proc ChangeColor(){
+    int $color = 1;
+    string $circleControls[]; 
+
+
+    for ($i = 0; $i < 25; $i++)
+    {
+        circle -center 0 0 0 -normal 0 1 0 -sweep 360 -radius 1 -degree 3 -useTolerance 0 -tolerance 0.01 -sections 8 -ch 1 -n ("ctrl"+$i);
+        int $j = $i*10;
+        int $k = -($j*$i);
+        int $m = 0 - $i;
+        rotate -r ($m) ($k) ($j);
+        setAttr ("ctrl" +$i + "Shape.overrideEnabled") 1;
+        $circleControls = `ls -sl`;
+        $color = $i;
+        for ($ctrl in $circleControls)
+        {
+            string $shapeNodes[] = `listRelatives -shapes $circleControls`;
+        
+            for ($shape in $shapeNodes)
+            {
+                setAttr ($shape + ".overrideColor")($color);
+            }
+        }
+    }
+}
+ChangeColor;
