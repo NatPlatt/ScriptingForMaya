@@ -1,10 +1,8 @@
 import maya.cmds as cmds
 
-class RenamerUI:
-    def _init_(self, name, makeAWindow, renameIt):
-        self.name = name
-        self.makeAWindow()
-        self.renameIt()
+class RenamerUI():
+    def __init__(self):
+        self.myWindow = "MyWindowTool"
 
     def renameIt(self, name_string):
         '''
@@ -56,28 +54,41 @@ class RenamerUI:
                 replace_num_int += 1
                 cmds.rename(final_name_string)
                 replace_num_string = str(replace_num_int)
-
         else:
             cmds.error('Characters are not sequential. Input another string.')
 
-    #renameIt('Sphere_###_Obj')
 
     def defaultButtonPush(self):
         print "Button was pushed"
 
-    def makeAWindow(self, myWindow):
-        window = cmds.window(title="Duplicate Amount", iconName='Short Name', widthHeight=(300, 100))
-        cmds.columnLayout(adjustableColumn=True)
-        intFieldGrp = cmds.intField("Enter the number of duplicates you want.", minValue=0, maxValue=100)
-        cmds.button(label='Duplicate!', command=self.getTheNums())
-        cmds.button(label='Close', command=('cmds.deleteUI(\"' + window + '\", window=True)'))
+    def makeAWindow(self):
+        self.delete()
+        self.myWindow = cmds.window(title="MyWindowTool",
+                                    widthHeight=(300, 100))
+        self.colmLayout = cmds.columnLayout(parent=self.myWindow, 
+                                            adjustableColumn=True)
+        self.name_field = cmds.textField(parent=self.colmLayout,
+                                         placeholderText="Enter name format 'name###name' ")
+        cmds.button(parent=self.colmLayout, 
+                    label='Rename It!', 
+                    command=self.getTheName)
+        cmds.button(parent=self.colmLayout, 
+                    label='Close', 
+                    command=('cmds.deleteUI(\"' + self.myWindow + '\", window=True)') )
         cmds.setParent('..')
-        cmds.showWindow(window)
+        
+        cmds.showWindow(self.myWindow)
+        
+    def getTheName(self,name_string):
+        name_field = self.makeAWindow
+        name_string = cmds.textField(self.name_field, query=True, text=True)
+        self.renameIt(name_string)
 
-    def getTheNums(self, num):
-        intFieldGrp = self.makeAWindow()
-        nums = cmds.intField(intFieldGrp, query=True, value=True)
-        if nums > 0:
-            self.renameIt(nums)
+    def delete(self):
+        if cmds.window(self.myWindow, exists=True ):
+            cmds.deleteUI(self.myWindow)
 
+
+myWindow = RenamerUI()
+myWindow.makeAWindow()
 
