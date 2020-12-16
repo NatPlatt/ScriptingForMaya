@@ -57,16 +57,13 @@ class RenamerUI():
         else:
             cmds.error('Characters are not sequential. Input another string.')
 
-
-    def defaultButtonPush(self):
-        print "Button was pushed"
-
     def makeAWindow(self):
         self.delete()
         self.myWindow = cmds.window(title="MyWindowTool",
                                     widthHeight=(300, 100))
         self.colmLayout = cmds.columnLayout(parent=self.myWindow, 
                                             adjustableColumn=True)
+        cmds.text(label='Select the objects you want to rename, then type the name in the field below', align='center')
         self.name_field = cmds.textField(parent=self.colmLayout,
                                          placeholderText="Enter name format 'name###name' ")
         cmds.button(parent=self.colmLayout, 
